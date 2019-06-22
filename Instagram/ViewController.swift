@@ -9,32 +9,22 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var dateTF: UITextField!
-    @IBOutlet weak var monthTF: UITextField!
-    @IBOutlet weak var yearTF: UITextField!
-    
-    @IBOutlet weak var resultLabel: UILabel!
-    
-    @IBAction func findDay() {
-        var dateComponets = DateComponents()
-        guard let day = dateTF.text, let month = monthTF.text, let year = yearTF.text else { return }
-        dateComponets.day = Int(day)
-        dateComponets.month = Int(month)
-        dateComponets.year = Int(year)
-        
-        let calendar = Calendar.current
-        guard let date = calendar.date(from: dateComponets) else { return }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        
-        let weekday = dateFormatter.string(from: date)
-        
-        resultLabel.text = weekday
+    @IBOutlet weak var celsiusLabel: UILabel!
+    @IBOutlet weak var fahrenheitLabel: UILabel!
+    @IBOutlet weak var slider: UISlider! {
+        didSet {
+            slider.maximumValue = 100
+            slider.minimumValue = 0
+            slider.value = 0
+        }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+    @IBAction func sliderValueChange(_ sender: UISlider) {
+        let temperatureCelsius = Int(round(sender.value))
+        celsiusLabel.text = "\(temperatureCelsius)ºC"
+        
+        let temperatureFahrenheit = Int(round(sender.value * 9 / 5 + 32))
+        fahrenheitLabel.text = "\(temperatureFahrenheit)ºF"
     }
 }
 
